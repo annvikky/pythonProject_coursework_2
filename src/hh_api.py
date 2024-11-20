@@ -5,7 +5,7 @@ from requests import Response
 
 
 class Parser(ABC):
-    """ Класс для работы API сервиса с вакансиями"""
+    """Класс для работы API сервиса с вакансиями"""
 
     @abstractmethod
     def connect_to_api(self) -> Response:
@@ -17,18 +17,20 @@ class Parser(ABC):
 
 
 class HH(Parser):
-    """ Класс для работы с API HeadHunter."""
+    """Класс для работы с API HeadHunter."""
 
     def __init__(self):
-        """ Инициализация класса."""
-        self.__url = 'https://api.hh.ru/vacancies'
-        self.__headers = {'User-Agent': 'HH-User-Agent'}
-        self.__params = {'text': '', 'page': 0, 'per_page': 100}
+        """Инициализация класса."""
+        self.__url = "https://api.hh.ru/vacancies"
+        self.__headers = {"User-Agent": "HH-User-Agent"}
+        self.__params = {"text": "", "page": 0, "per_page": 100}
         self.__vacancies = []
 
     def __connect_to_api(self):
-        """ Подключение к API hh.ru."""
-        response = requests.get(self.__url, headers=self.__headers, params=self.__params)
+        """Подключение к API hh.ru."""
+        response = requests.get(
+            self.__url, headers=self.__headers, params=self.__params
+        )
         if response.status_code == 200:
             return response
         else:
@@ -37,24 +39,24 @@ class HH(Parser):
 
     @property
     def connect_to_api(self):
-        """ Геттер для подключения к api."""
+        """Геттер для подключения к api."""
         return self.__connect_to_api()
 
     def get_vacancies(self, keyword: str) -> list:
-        """ Получения списка вакансий по заданному фильтру в json."""
-        self.__params['text'] = keyword
-        while self.__params.get('page') != 20:
+        """Получения списка вакансий по заданному фильтру в json."""
+        self.__params["text"] = keyword
+        while self.__params.get("page") != 20:
             response = self.__connect_to_api()
             if response:
                 response_json = response.json()
-                vacancies = response_json['items']
+                vacancies = response_json["items"]
                 self.__vacancies.extend(vacancies)
 
-                pages = response_json.get('pages')
-                if not pages or pages <= self.__params.get('page'):
+                pages = response_json.get("pages")
+                if not pages or pages <= self.__params.get("page"):
                     break
 
-                self.__params['page'] += 1
+                self.__params["page"] += 1
 
             else:
                 break
@@ -73,13 +75,16 @@ class HH(Parser):
                 if salary:
                     salary = salary.get("from")
 
-                vacancy = {"name": name,
-                           "url": url,
-                           "requirement": requirement,
-                           "responsibility": responsibility,
-                           "salary": salary}
+                vacancy = {
+                    "name": name,
+                    "url": url,
+                    "requirement": requirement,
+                    "responsibility": responsibility,
+                    "salary": salary,
+                }
                 vacancies_list.append(vacancy)
 
         return vacancies_list
+
 
 # print(HH().get_vacancies("Пилот"))

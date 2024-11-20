@@ -1,5 +1,6 @@
 from src.hh_api import HH
-from src.utils import get_vacancies_filtered_by_name, get_top_vacancies, sort_vacancies_by_salary
+from src.utils import get_vacancies_filtered_by_name, get_top_vacancies, sort_vacancies_by_salary, \
+    get_vacancies_filtered_by_salary_from
 from src.vacancies_to_json import SaveToJson
 from src.vacancy import Vacancy
 
@@ -25,8 +26,8 @@ def user_interaction():
         print("2. Показать все вакансии, отобранные по названию вакансии (Введите: 2)")
         print("3. Показать количество вакансий, отобранных по зарплате - top (Ведите: 3)")
         print("4. Показать все вакансии в диапазоне зарплат (Введите: 4)")
-        print("5. Добавить вакансию (Введите: 5")
-        print("6. Удалить вакансию по url\n (Введите: 6")
+        # print("5. Добавить вакансию (Введите: 5")
+        # print("6. Удалить вакансию по url\n (Введите: 6")
 
     try:
         action = int(input("Введите цифру от 1 до 5: "))
@@ -53,27 +54,13 @@ def user_interaction():
         for v in top_vacancies:
             print(v)
 
-    if action ==4:
-
-
-
-
-
-# Функция для взаимодействия с пользователем
-# def user_interaction():
-#     platforms = ["HeadHunter"]
-#     search_query = input("Введите поисковый запрос: ")
-#     top_n = int(input("Введите количество вакансий для вывода в топ N: "))
-#     filter_words = input("Введите ключевые слова для фильтрации вакансий: ").split()
-#     salary_range = input("Введите диапазон зарплат: ") # Пример: 100000 - 150000
-#
-#     filtered_vacancies = filter_vacancies(vacancies_list, filter_words)
-#
-#     ranged_vacancies = get_vacancies_by_salary(filtered_vacancies, salary_range)
-#
-#     sorted_vacancies = sort_vacancies(ranged_vacancies)
-#     top_vacancies = get_top_vacancies(sorted_vacancies, top_n)
-#     print_vacancies(top_vacancies)
+    if action == 4:
+        salary_from = int(input("Введите заработную плату от (целое число): "))
+        salary_to = int(input("Введите заработную плату до (целое число): "))
+        ranged_vacancies = get_vacancies_filtered_by_salary_from(hh_vacancies, salary_from, salary_to)
+        ranged_vacancies = sort_vacancies_by_salary(ranged_vacancies)
+        for v in ranged_vacancies:
+            print(v)
 
 
 if __name__ == "__main__":

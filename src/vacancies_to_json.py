@@ -7,21 +7,21 @@ from src.vacancy import Vacancy
 
 
 class SaveToFile(ABC):
-    """ Абстрактный класс для работы с json-файлами."""
+    """Абстрактный класс для работы с json-файлами."""
 
     @abstractmethod
-    def read_data(self):
-        """ Абстрактный метод получения данных из файла."""
+    def read_data_from_file(self):
+        """Абстрактный метод получения данных из файла."""
         pass
 
     @abstractmethod
     def add_data(self, vacancies: list[Vacancy]):
-        """ Абстрактный метод добавления данных в файл."""
+        """Абстрактный метод добавления данных в файл."""
         pass
 
     @abstractmethod
     def del_data(self, vacancies: list[Vacancy]):
-        """ Абстрактный метод удаления данных из файла."""
+        """Абстрактный метод удаления данных из файла."""
         pass
 
 
@@ -34,8 +34,8 @@ class SaveToJson(SaveToFile):
             filename,
         )
 
-    def __read_data(self) -> list[Vacancy]:
-        """ Метод для считывания данных из файла"""
+    def __read_data_from_file(self) -> list[Vacancy]:
+        """Метод для считывания данных из файла"""
         try:
             with open(self.__filename, encoding="utf-8") as file:
                 data = json.load(file)
@@ -46,12 +46,12 @@ class SaveToJson(SaveToFile):
         except JSONDecodeError:
             return []
 
-    def read_data(self):
-        return self.__read_data()
+    def read_data_from_file(self):
+        return self.__read_data_from_file()
 
     def __add_data(self, vacancies: list[Vacancy]) -> None:
-        """ Метод для добавления данных о вакансиях в файл."""
-        vacancies_list = self.__read_data()
+        """Метод для добавления данных о вакансиях в файл."""
+        vacancies_list = self.__read_data_from_file()
         for vacancy in vacancies:
             if vacancy.url in [v.url for v in vacancies_list]:
                 return
@@ -63,8 +63,8 @@ class SaveToJson(SaveToFile):
         return self.__add_data(vacancies)
 
     def __del_data(self, vacancies: list[Vacancy]) -> None:
-        """ Метод для Удаления данных о вакансии из файла."""
-        vacancies_list = self.__read_data()
+        """Метод для Удаления данных о вакансии из файла."""
+        vacancies_list = self.__read_data_from_file()
         for vacancy in vacancies:
 
             is_found = False
