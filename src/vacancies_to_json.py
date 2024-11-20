@@ -2,6 +2,7 @@ import json
 import os
 from abc import ABC, abstractmethod
 from json import JSONDecodeError
+from typing import Any
 
 from src.vacancy import Vacancy
 
@@ -10,17 +11,17 @@ class SaveToFile(ABC):
     """Абстрактный класс для работы с json-файлами."""
 
     @abstractmethod
-    def read_data_from_file(self):
+    def read_data_from_file(self) -> Any:
         """Абстрактный метод получения данных из файла."""
         pass
 
     @abstractmethod
-    def add_data(self, vacancies: list[Vacancy]):
+    def add_data(self, vacancies: list[Vacancy]) -> Any:
         """Абстрактный метод добавления данных в файл."""
         pass
 
     @abstractmethod
-    def del_data(self, vacancies: list[Vacancy]):
+    def del_data(self, vacancies: list[Vacancy]) -> Any:
         """Абстрактный метод удаления данных из файла."""
         pass
 
@@ -46,7 +47,7 @@ class SaveToJson(SaveToFile):
         except JSONDecodeError:
             return []
 
-    def read_data_from_file(self):
+    def read_data_from_file(self) -> Any:
         return self.__read_data_from_file()
 
     def __add_data(self, vacancies: list[Vacancy]) -> None:
@@ -59,7 +60,7 @@ class SaveToJson(SaveToFile):
             with open(self.__filename, encoding="utf-8", mode="a") as file:
                 file.write(json.dumps(vacancy.get_to_dict(), indent=4))
 
-    def add_data(self, vacancies):
+    def add_data(self, vacancies) -> Any:
         return self.__add_data(vacancies)
 
     def __del_data(self, vacancies: list[Vacancy]) -> None:
@@ -79,5 +80,5 @@ class SaveToJson(SaveToFile):
                     vacancies = [v.get_to_dict() for v in vacancies_list]
                     file.write(json.dumps(vacancies, indent=4))
 
-    def del_data(self, vacancies):
+    def del_data(self, vacancies) -> Any:
         return self.__del_data(vacancies)

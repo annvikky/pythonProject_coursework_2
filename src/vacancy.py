@@ -18,7 +18,7 @@ class Vacancy:
         self.salary = self.__salary_is_valid(salary)
 
     @staticmethod
-    def __salary_is_valid(salary: int):
+    def __salary_is_valid(salary: int) -> int:
         """Метод для валидации зарплаты."""
         if salary:
             return int(salary)
@@ -30,7 +30,7 @@ class Vacancy:
         """Возвращает список экземпляров класса из списка словарей."""
         return [cls(**vacancy) for vacancy in vacancies]
 
-    def get_to_dict(self):
+    def get_to_dict(self) -> dict[str, str | int]:
         """Возвращает словарь с описанием вакансии из экземпляра класса."""
         return {
             "name": self.name,
@@ -40,7 +40,7 @@ class Vacancy:
             "salary": self.salary,
         }
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         """Магический метод сравнения вакансий по зарплате (=)."""
         if not isinstance(other, (int, Vacancy)):
             raise TypeError("Операнд справа должен иметь тип int или Vacancy")
@@ -48,7 +48,7 @@ class Vacancy:
         salary_for_comparison = other if isinstance(other, int) else other.salary
         return self.salary == salary_for_comparison
 
-    def __lt__(self, other):
+    def __lt__(self, other) -> bool:
         """Магический метод сравнения вакансий по зарплате (<)."""
         if not isinstance(other, (int, Vacancy)):
             raise TypeError("Операнд справа должен иметь тип int или Vacancy")
@@ -56,7 +56,7 @@ class Vacancy:
         salary_for_comparison = other if isinstance(other, int) else other.salary
         return self.salary < salary_for_comparison
 
-    def __gt__(self, other):
+    def __gt__(self, other) -> bool:
         """Магический метод сравнения вакансий по зарплате (>)."""
         if not isinstance(other, (int, Vacancy)):
             raise TypeError("Операнд справа должен иметь тип int или Vacancy")
@@ -64,7 +64,7 @@ class Vacancy:
         salary_for_comparison = other if isinstance(other, int) else other.salary
         return self.salary > salary_for_comparison
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Метод строкового представления вакансий."""
 
         return f"""{self.name} (Зарплата: {self.salary if self.salary else 'не указана'}).

@@ -26,7 +26,7 @@ class HH(Parser):
         self.__params = {"text": "", "page": 0, "per_page": 100}
         self.__vacancies = []
 
-    def __connect_to_api(self):
+    def __connect_to_api(self) -> Response | int:
         """Подключение к API hh.ru."""
         response = requests.get(
             self.__url, headers=self.__headers, params=self.__params
@@ -38,7 +38,7 @@ class HH(Parser):
             # print("Ошибка подключения к ресурсу hh.ru")
 
     @property
-    def connect_to_api(self):
+    def connect_to_api(self) -> Response:
         """Геттер для подключения к api."""
         return self.__connect_to_api()
 
@@ -85,6 +85,3 @@ class HH(Parser):
                 vacancies_list.append(vacancy)
 
         return vacancies_list
-
-
-# print(HH().get_vacancies("Пилот"))
